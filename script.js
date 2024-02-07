@@ -23,7 +23,8 @@ const gameBoard = (function () {
     function updateCell(positionX, positionY, marqueur){
         gameBoardObject.grid[positionX][positionY] = marqueur;
         const isWin = logicModule.isWin()
-        return isWin;
+        return true
+
     }
 
     return {
@@ -47,6 +48,8 @@ const logicModule = (function () {
         console.log(`It's ${userTurn.name} turn.`)
         let valuePlay = prompt("Where do you want to play ? row, column")
         isValid(valuePlay)
+        
+        
     }
 /*
     function aiPlay() {
@@ -93,14 +96,13 @@ const logicModule = (function () {
     }
 
     const isTie = () => {
-        for (let i =0; i < 3; i++){
-            for ( let j=0; i < 3; j++){
-                if(gameBoardObject.grid[i][j] === 0 || logicModule.isWin()){
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (gameBoardObject.grid[i][j] === 0) {
                     return false;
                 }
             }
         }
-        console.log("It's a tie.")
         return true;
     }
 
@@ -141,9 +143,16 @@ const logicModule = (function () {
         }
     
         else {
+            const tieResult = isTie()
+            if ( tieResult === false){
             console.log("No win yet.");
             switchPlayer()
-            return false; }
+            return false; } 
+            else {
+                annTie()
+            }
+        }
+
     }
 
     const annWinner = () => {
@@ -153,13 +162,16 @@ const logicModule = (function () {
 
     }
 
+    const annTie = () => {
+        console.log("This is a tie ! Equality !")
+    }
+
     return {
         isValid,
         play,
         // aiPlay,
         isWin,
         isTie,
-        annWinner,
     }
 
 })();
