@@ -110,11 +110,13 @@ const logicModule = (function () {
         console.log("Current Board:", gameBoardObject);
         const switchPlayer = userLogic.switchPlayer
         // Rows
+        
         for (let i = 0; i < 3; i++) {
             if (gameBoardObject.grid[i][0] !== 0 &&
                 gameBoardObject.grid[i][0] === gameBoardObject.grid[i][1] &&
                 gameBoardObject.grid[i][1] === gameBoardObject.grid[i][2]) {
                 return annWinner();
+                
             }
         }
     
@@ -142,6 +144,7 @@ const logicModule = (function () {
                 
         }
     
+    
         else {
             const tieResult = isTie()
             if ( tieResult === false){
@@ -159,7 +162,6 @@ const logicModule = (function () {
         const userTurn = userLogic.getUserTurn()
         console.log(`The winner is ${userTurn.name}`);
         userTurn.points++
-        return true;
 
     }
 
