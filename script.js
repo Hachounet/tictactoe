@@ -23,7 +23,7 @@ const gameBoard = (function () {
     function updateCell(positionX, positionY, marqueur){
         gameBoardObject.grid[positionX][positionY] = marqueur;
         const isWin = logicModule.isWin()
-        return true
+        return true;
 
     }
 
@@ -158,6 +158,7 @@ const logicModule = (function () {
     const annWinner = () => {
         const userTurn = userLogic.getUserTurn()
         console.log(`The winner is ${userTurn.name}`);
+        userTurn.points++
         return true;
 
     }
