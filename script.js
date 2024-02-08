@@ -22,8 +22,6 @@ const gameBoard = (function () {
 
     function updateCell(positionX, positionY, marqueur){
         gameBoardObject.grid[positionX][positionY] = marqueur;
-        renderModule.displayMove()
-        const isWin = logicModule.isWin()
 
     }
 
@@ -42,15 +40,31 @@ const logicModule = (function () {
 
     const gameBoardObject = gameBoard.gameBoardObject
 
-    function play(positionX, positionY) {
-        const userTurn = userLogic.getUserTurn()
+    async function play(positionX, positionY) {
+        const userTurn = userLogic.getUserTurn();
         // Input need to be in xx format like 11 / 01 / 22 etc.
-        console.log(`It's ${userTurn.name} turn.`)
-        let valuePlay = prompt("Where do you want to play ? row, column")
+        console.log(`It's ${userTurn.name} turn.`);
+        await sleep(); // add a sleep
+        let valuePlay = prompt("Where do you want to play ? row, column");
         isValid(valuePlay)
+        let isValidReturn = isValid(valuePlay);
+        if ( isValidReturn === true ){
+            gameBoard.updateCell()
+            renderModule.displayMove()
+            const isWin = logicModule.isWin()
+        }
+        else if ( isValidReturn === false){
+            console.log("You can't play here.")
+            play();
+        }
         
-        
-    }
+      }
+
+      async function sleep() {
+        return new Promise((res) => {
+          setTimeout(() => res(), 100)
+        })
+      }
 /* Cancelled. Will be reworked with minmax algo later.
 
     function aiPlay() {
@@ -88,11 +102,10 @@ const logicModule = (function () {
         positionY = parseInt(positionY)
         marqueur = parseInt(marqueur)
         if (gameBoardObject.grid[positionX][positionY] === 0 ){
-            gameBoard.updateCell(positionX, positionY, marqueur)
+            return true;
         }
         else {
-            console.log("Error, you can't play here.")
-            play()
+            return false;
         }
     }
 
@@ -298,7 +311,7 @@ const displayMove = () => {
         }
         
     }
-    return console.log("I'm supposed to have refresh textContent");
+    return console.log("I'm supposed to have refresh textContent")
 }
 
 return {
