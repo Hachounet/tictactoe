@@ -22,8 +22,8 @@ const gameBoard = (function () {
 
     function updateCell(positionX, positionY, marqueur){
         gameBoardObject.grid[positionX][positionY] = marqueur;
+        renderModule.displayMove()
         const isWin = logicModule.isWin()
-        return true;
 
     }
 
@@ -51,7 +51,8 @@ const logicModule = (function () {
         
         
     }
-/*
+/* Cancelled. Will be reworked with minmax algo later.
+
     function aiPlay() {
         // Can it win ? 
         console.log("It's AI turn.")
@@ -160,13 +161,27 @@ const logicModule = (function () {
 
     const annWinner = () => {
         const userTurn = userLogic.getUserTurn()
-        console.log(`The winner is ${userTurn.name}`);
         userTurn.points++
+        console.log(`The winner is ${userTurn.name} and have now ${userTurn.points}`);
+        restart()
 
     }
 
     const annTie = () => {
         console.log("This is a tie ! Equality !")
+        restart()
+    }
+
+    const restart = () => {
+        let userChoice = prompt("Do you want to play another game ?")
+        if ( userChoice === "yes"){
+            const resetBoard = gameBoard.resetBoard()
+            console.log("Game reseted. ")
+            const switchPlayer = userLogic.switchPlayer()
+        }
+        else {
+            console.log("Okay, no more games.")
+        }
     }
 
     return {
@@ -175,6 +190,7 @@ const logicModule = (function () {
         // aiPlay,
         isWin,
         isTie,
+        restart,
     }
 
 })();
@@ -216,6 +232,7 @@ function aiFactory(name){
 const switchPlayer = () => {
     userTurn = (userTurn === user1) ? userBot : user1;
      if (userTurn === userBot) {
+        // aiPlay cancelled for now. Will be rework with minmax algo later
         console.log(`Switched to ${userTurn.typeOf} turn.`)
         const aiPlay = logicModule.play()
     }
@@ -245,3 +262,48 @@ return {
 const user1 = userLogic.playerFactory("val")
 const userBot = userLogic.aiFactory("Bot")
 let initialization = userLogic.initUserTurn()
+
+// Rendering module
+
+const renderModule = (function () {
+
+const gameBoardObject = gameBoard.gameBoardObject.grid;
+
+const generateGrid = () => {
+    const gamepart = document.getElementById("gamepart");
+
+
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++){
+                const newDiv = document.createElement("div");
+                newDiv.classList.add("cell")
+                newDiv.textContent = gameBoardObject[i][j]
+                gamepart.appendChild(newDiv)
+
+        
+        }
+    }
+}
+
+const displayMove = () => {
+    let cells = document.getElementsByClassName("cell");
+   
+    let index = 0;
+    cells = Array.from(cells)
+    for ( let i = 0; i < 3; i++){
+        for ( let j = 0; j < 3; j++){
+            
+            cells[index].textContent = gameBoardObject[i][j];
+            index++;
+        }
+        
+    }
+    return console.log("I'm supposed to have refresh textContent");
+}
+
+return {
+    generateGrid,
+    displayMove,
+}
+
+})();

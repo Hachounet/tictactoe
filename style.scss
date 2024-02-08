@@ -1,0 +1,55 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100dvh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 4fr 1fr;
+    grid-template-areas: 
+    "header header"
+    "main main"
+    "footer footer";
+}
+
+header {
+    grid-area: header;
+    background-color: bisque;
+}
+
+main {
+    grid-area: main;
+    background-color: snow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    #gamepart {
+        border: 1px solid black;
+        display: grid;
+        width: 25vw;
+        height: 25vw;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+
+        .cell {
+            border: 1px solid red;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            
+        }
+        
+    }
+}
+
+footer {
+    grid-area: footer;
+    background: bisque;
+}
