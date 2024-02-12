@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: "Debug";
+    src: url(debugfreetrial-mvdyb-webfont.woff) format(woff);
+    src: url(debugfreetrial-mvdyb-webfont.woff2) format(woff2);
+  }
+
 body {
     height: 100dvh;
     display: grid;
@@ -13,16 +19,108 @@ body {
     "header header"
     "main main"
     "footer footer";
+
+    // Not my work. Gradient background with waves from Barbara Rodriguez slightly reworked. Thanks a lot ! 
+    margin: auto;
+    overflow: auto;
+    background: linear-gradient(32deg, rgba(178, 0, 255, 1) 0%, rgba(37, 131, 207, 1) 44%, rgba(3, 187, 26, 1) 62%, rgba(235, 243, 33, 1) 79%, rgba(207, 9, 9, 1) 98%);
+    animation: gradient 15s ease infinite;
+    background-size: 400% 400%;
+    background-attachment: fixed;
+    
+    
+    @keyframes gradient {
+        0% {
+            background-position: 0% 0%;
+        }
+        50% {
+            background-position: 100% 100%;
+        }
+        100% {
+            background-position: 0% 0%;
+        }
+    }
+    
+    .wave {
+        background: rgb(255 255 255 / 25%);
+        border-radius: 1000% 1000% 0 0;
+        position: fixed;
+        width: 200%;
+        height: 12em;
+        animation: wave 10s -3s linear infinite;
+        transform: translate3d(0, 0, 0);
+        opacity: 0.8;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+    }
+    
+    .wave:nth-of-type(2) {
+        bottom: -1.25em;
+        animation: wave 18s linear reverse infinite;
+        opacity: 0.8;
+    }
+    
+    .wave:nth-of-type(3) {
+        bottom: -2.5em;
+        animation: wave 20s -1s reverse infinite;
+        opacity: 0.9;
+    }
+    
+    @keyframes wave {
+        2% {
+            transform: translateX(1);
+        }
+    
+        25% {
+            transform: translateX(-25%);
+        }
+    
+        50% {
+            transform: translateX(-50%);
+        }
+    
+        75% {
+            transform: translateX(-25%);
+        }
+    
+        100% {
+            transform: translateX(1);
+        }
+    }
+
+    .debug-font {
+        font-family: "Debug";
+        background-size: 100%;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+
 }
 
 header {
     grid-area: header;
-    background-color: bisque;
+    
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    justify-items: center;
+    align-items: center;
+
+    #title-site {
+        font-size: 5rem;
+        grid-column: 2;
+        background-image: linear-gradient(to right, #682aa1, #6a4ab7, #6d66ca, #7480db, #7f99e9, #88a4ea, #92afeb, #9eb9eb, #a4b9e0, #aab9d5, #afb8cb, #b4b8c0);
+        
+        &:hover {
+            animation: blur 4s ease 0s infinite;
+        }
+    }
 }
 
 main {
     grid-area: main;
-    background-color: snow;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,9 +145,21 @@ main {
         }
         
     }
+
+    
 }
 
 footer {
     grid-area: footer;
-    background: bisque;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.5vw;
+
+    #footer-text {
+        background-image: linear-gradient(to right, #682aa1, #6a4ab7, #6d66ca, #7480db, #7f99e9, #7e9be1, #7f9dd8, #829ecf, #748ab1, #667794, #596477, #4c525c);
+        display: flex;
+        justify-self: center;
+    }
 }

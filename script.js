@@ -20,8 +20,9 @@ const gameBoard = (function () {
 
     };
 
-    function updateCell(positionX, positionY, marqueur){
-        gameBoardObject.grid[positionX][positionY] = marqueur;
+    function updateCell(positionX, positionY){
+        const userMarqueur = userLogic.getUserTurn()
+        gameBoardObject.grid[positionX][positionY] = userMarqueur.marqueur;
 
     }
 
@@ -38,33 +39,45 @@ const gameBoard = (function () {
 
 const logicModule = (function () {
 
+    const endTurnResult = {
+        win: "win",
+        tie: "tie",
+        nowinnotie: "nowinnotie",
+    }
+    
     const gameBoardObject = gameBoard.gameBoardObject
 
-    async function play(positionX, positionY) {
+    const printNewRound = () => {
+        const getBoard = gameBoard.getBoard()
         const userTurn = userLogic.getUserTurn();
-        // Input need to be in xx format like 11 / 01 / 22 etc.
-        console.log(`It's ${userTurn.name} turn.`);
-        await sleep(); // add a sleep
-        let valuePlay = prompt("Where do you want to play ? row, column");
-        isValid(valuePlay)
-        let isValidReturn = isValid(valuePlay);
-        if ( isValidReturn === true ){
-            gameBoard.updateCell()
-            renderModule.displayMove()
-            const isWin = logicModule.isWin()
-        }
-        else if ( isValidReturn === false){
-            console.log("You can't play here.")
-            play();
-        }
-        
-      }
+        console.log(`It's ${userTurn.name} turn.`)
+        console.log(`Current board :`, getBoard)
+    }
 
-      async function sleep() {
-        return new Promise((res) => {
-          setTimeout(() => res(), 100)
-        })
-      }
+    function play(selectedRow, selectedCol) {
+        let isValidReturn = false;
+        while (isValidReturn === false) {
+             // Input needs to be in xx format like 11 / 01 / 22 etc.
+              // add a sleep
+             let valuePlay = [selectedRow, selectedCol];
+             isValidReturn = isValid(valuePlay);
+        }
+        // Destructuration of isValidReturn ( who return as an object ) to give vars to updateCell
+        const { positionX, positionY } = isValidReturn;
+        gameBoard.updateCell(positionX, positionY);
+        const isWinReturn = logicModule.isWin();
+        if ( isWinReturn === endTurnResult.win ){
+          annWinner()  
+        }
+        else if ( isWinReturn === endTurnResult.tie){
+            annTie()
+        }
+        else {
+        userLogic.switchPlayer();
+        printNewRound();
+        }
+    } 
+
 /* Cancelled. Will be reworked with minmax algo later.
 
     function aiPlay() {
@@ -92,19 +105,17 @@ const logicModule = (function () {
 
 
     function isValid(valuePlay){
-        const userMarqueur = userLogic.getUserTurn()
-        
+ 
         valuePlay = Array.from(valuePlay)
         let positionX = valuePlay[0]
         let positionY = valuePlay[1]
-        let marqueur = userMarqueur.marqueur
         positionX = parseInt(positionX)
         positionY = parseInt(positionY)
-        marqueur = parseInt(marqueur)
         if (gameBoardObject.grid[positionX][positionY] === 0 ){
-            return true;
+            return {positionX, positionY};
         }
         else {
+            console.log("You can't play here.")
             return false;
         }
     }
@@ -121,15 +132,13 @@ const logicModule = (function () {
     }
 
     const isWin = () => {
-        console.log("Current Board:", gameBoardObject);
-        const switchPlayer = userLogic.switchPlayer
         // Rows
         
         for (let i = 0; i < 3; i++) {
             if (gameBoardObject.grid[i][0] !== 0 &&
                 gameBoardObject.grid[i][0] === gameBoardObject.grid[i][1] &&
                 gameBoardObject.grid[i][1] === gameBoardObject.grid[i][2]) {
-                return annWinner();
+                return endTurnResult.win;
                 
             }
         }
@@ -139,7 +148,7 @@ const logicModule = (function () {
             if (gameBoardObject.grid[0][j] !== 0 &&
                 gameBoardObject.grid[0][j] === gameBoardObject.grid[1][j] &&
                 gameBoardObject.grid[1][j] === gameBoardObject.grid[2][j]) {
-                return annWinner();
+                return endTurnResult.win;
             }
         }
     
@@ -147,14 +156,14 @@ const logicModule = (function () {
         if (gameBoardObject.grid[0][0] !== 0 &&
             gameBoardObject.grid[0][0] === gameBoardObject.grid[1][1] &&
             gameBoardObject.grid[1][1] === gameBoardObject.grid[2][2]) {
-               return annWinner();
+            return endTurnResult.win;
                 
         }
     
         if (gameBoardObject.grid[0][2] !== 0 &&
             gameBoardObject.grid[0][2] === gameBoardObject.grid[1][1] &&
             gameBoardObject.grid[1][1] === gameBoardObject.grid[2][0]) {
-                return annWinner();
+            return endTurnResult.win;
                 
         }
     
@@ -162,11 +171,11 @@ const logicModule = (function () {
         else {
             const tieResult = isTie()
             if ( tieResult === false){
-            console.log("No win yet.");
-            switchPlayer()
-            return false; } 
+                console.log("No win yet.");
+                return endTurnResult.nowinnotie;
+            } 
             else {
-                annTie()
+                return endTurnResult.tie;
             }
         }
 
@@ -188,16 +197,19 @@ const logicModule = (function () {
     const restart = () => {
         let userChoice = prompt("Do you want to play another game ?")
         if ( userChoice === "yes"){
-            const resetBoard = gameBoard.resetBoard()
+            gameBoard.resetBoard()
+            renderModule.displayMove()
             console.log("Game reseted. ")
-            const switchPlayer = userLogic.switchPlayer()
+            userLogic.switchPlayer()
+
         }
         else {
-            console.log("Okay, no more games.")
+            console.log("Okay, no more games. :'(")
         }
     }
 
     return {
+        printNewRound,
         isValid,
         play,
         // aiPlay,
@@ -244,16 +256,6 @@ function aiFactory(name){
 
 const switchPlayer = () => {
     userTurn = (userTurn === user1) ? userBot : user1;
-     if (userTurn === userBot) {
-        // aiPlay cancelled for now. Will be rework with minmax algo later
-        console.log(`Switched to ${userTurn.typeOf} turn.`)
-        const aiPlay = logicModule.play()
-    }
-    else {
-        console.log(`Switched to ${userTurn.typeOf} turn.`)
-        const play = logicModule.play()
-    }
-    
    
 
 }
@@ -288,10 +290,12 @@ const generateGrid = () => {
 
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++){
-                const newDiv = document.createElement("div");
-                newDiv.classList.add("cell")
-                newDiv.textContent = gameBoardObject[i][j]
-                gamepart.appendChild(newDiv)
+                const newBtn = document.createElement("button");
+                newBtn.classList.add("cell");
+                newBtn.dataset.rows = i;
+                newBtn.dataset.columns = j;
+                newBtn.textContent = gameBoardObject[i][j];
+                gamepart.appendChild(newBtn);
 
         
         }
@@ -311,8 +315,21 @@ const displayMove = () => {
         }
         
     }
-    return console.log("I'm supposed to have refresh textContent")
 }
+
+function retrieveClickPosition(e) {
+    const selectedRow = e.target.dataset.rows;
+    const selectedCol = e.target.dataset.columns
+    if (!selectedRow) return;
+
+    logicModule.play(selectedRow, selectedCol);
+    displayMove();
+
+}
+
+gamepart.addEventListener("click", retrieveClickPosition);
+
+generateGrid();
 
 return {
     generateGrid,
