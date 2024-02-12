@@ -56,11 +56,13 @@ const logicModule = (function () {
 
     function play(selectedRow, selectedCol) {
         let isValidReturn = false;
-        while (isValidReturn === false) {
-             // Input needs to be in xx format like 11 / 01 / 22 etc.
-              // add a sleep
-             let valuePlay = [selectedRow, selectedCol];
-             isValidReturn = isValid(valuePlay);
+        
+        // Input needs to be in xx format like 11 / 01 / 22 etc.
+        let valuePlay = [selectedRow, selectedCol];
+        isValidReturn = isValid(valuePlay);
+             
+        if ( isValidReturn === false){
+            return;
         }
         // Destructuration of isValidReturn ( who return as an object ) to give vars to updateCell
         const { positionX, positionY } = isValidReturn;
@@ -117,6 +119,7 @@ const logicModule = (function () {
         else {
             console.log("You can't play here.")
             return false;
+            
         }
     }
 

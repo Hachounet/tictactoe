@@ -105,7 +105,6 @@ main {
   align-items: center;
 }
 main #gamepart {
-  border: 1px solid black;
   display: grid;
   width: 25vw;
   height: 25vw;
@@ -113,12 +112,41 @@ main #gamepart {
   grid-template-rows: 1fr 1fr 1fr;
 }
 main #gamepart .cell {
-  border: 1px solid red;
+  background-color: rgba(110, 110, 110, 0.048);
+  border: 1px solid black;
   height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+main #gamepart .cell:nth-child(1) {
+  border-top: none;
+  border-left: none;
+}
+main #gamepart .cell:nth-child(2) {
+  border-top: none;
+}
+main #gamepart .cell:nth-child(3) {
+  border-top: none;
+  border-right: none;
+}
+main #gamepart .cell:nth-child(4) {
+  border-left: none;
+}
+main #gamepart .cell:nth-child(6) {
+  border-right: none;
+}
+main #gamepart .cell:nth-child(7) {
+  border-left: none;
+  border-bottom: none;
+}
+main #gamepart .cell:nth-child(8) {
+  border-bottom: none;
+}
+main #gamepart .cell:nth-child(9) {
+  border-bottom: none;
+  border-right: none;
 }
 
 footer {
