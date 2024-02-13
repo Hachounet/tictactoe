@@ -5,6 +5,8 @@
 }
 
 $background-ui: rgba(110, 110, 110, 0);
+$background-color: #00DBDE;
+$background-image-for-text: linear-gradient(64deg, #00DBDE 0%, #FC00FF 100%);  
 
 @font-face {
     font-family: "Debug";
@@ -118,14 +120,14 @@ header {
     #title-site {
         font-size: 5rem;
         grid-column: 2;
-        background-color: #00DBDE;
-        background-image: linear-gradient(64deg, #00DBDE 0%, #FC00FF 100%);   
+        background-color: $background-color;
+        background-image: $background-image-for-text;
     }
 
     input {
         
         background-color: $background-ui;
-        background-image: linear-gradient(64deg, #00DBDE 0%, #FC00FF 100%);  
+        background-image: $background-image-for-text;
         
         font-size: 2.5rem;
         border: none;
@@ -174,6 +176,26 @@ main {
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
 
+        .fadein {
+            -webkit-animation: fadein 4s linear forwards;
+            animation: fadein 4s linear forwards;
+            opacity: 0;
+        }
+
+        @-webkit-keyframes fadein {
+            0%,100% {opacity: 1;}
+            50% {opacity: 0;}
+        }
+
+        @keyframes fadein {
+            0% {
+              opacity: 0;
+            }
+            100% {
+              opacity: 1;
+            }
+          }
+
         .cell {
             background-color: $background-ui;
             border: 1px solid black;
@@ -182,6 +204,12 @@ main {
             display: flex;
             justify-content: center;
             align-items: center;
+
+            font-family: "Debug";
+            font-size: xx-large;
+            background-clip: text;
+            background-image: $background-image-for-text;
+            -webkit-text-fill-color: transparent;
             
             &:nth-child(1) {
                 border-top: none;
@@ -222,18 +250,26 @@ main {
         }
         
     }
-    
+
+    .centered {
+        align-self: center !important;
+        justify-content: center;
+    }
+
+
     #left-part, #right-part {
+
         display: flex;
         align-self: baseline;
         justify-content: center;
 
         // Used when points are displayed
         .points {
-            align-self: center;
-            justify-self: center;
             font-family: "Debug";
             font-size: 100px;
+            background-clip: text;
+            background-image: $background-image-for-text;
+            -webkit-text-fill-color: transparent;
         }
 
         //Fadeout used by JS when name have been validated
@@ -335,7 +371,7 @@ footer {
     font-size: 1.5vw;
 
     #footer-text {
-        background-image: linear-gradient(64deg, #00DBDE 0%, #FC00FF 100%);  
+        background-image: $background-image-for-text;
         display: flex;
         justify-self: center;
     }

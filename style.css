@@ -136,6 +136,18 @@ main #gamepart {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
 }
+main #gamepart .fadein {
+  animation: fadein 4s linear forwards;
+  opacity: 0;
+}
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 main #gamepart .cell {
   background-color: rgba(110, 110, 110, 0);
   border: 1px solid black;
@@ -144,6 +156,12 @@ main #gamepart .cell {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "Debug";
+  font-size: xx-large;
+  -webkit-background-clip: text;
+          background-clip: text;
+  background-image: linear-gradient(64deg, #00DBDE 0%, #FC00FF 100%);
+  -webkit-text-fill-color: transparent;
 }
 main #gamepart .cell:nth-child(1) {
   border-top: none;
@@ -173,16 +191,22 @@ main #gamepart .cell:nth-child(9) {
   border-bottom: none;
   border-right: none;
 }
+main .centered {
+  align-self: center !important;
+  justify-content: center;
+}
 main #left-part, main #right-part {
   display: flex;
   align-self: baseline;
   justify-content: center;
 }
 main #left-part .points, main #right-part .points {
-  align-self: center;
-  justify-self: center;
   font-family: "Debug";
   font-size: 100px;
+  -webkit-background-clip: text;
+          background-clip: text;
+  background-image: linear-gradient(64deg, #00DBDE 0%, #FC00FF 100%);
+  -webkit-text-fill-color: transparent;
 }
 main #left-part .fade-out, main #right-part .fade-out {
   animation: fade-out 4s linear forwards;

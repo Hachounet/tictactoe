@@ -4,9 +4,9 @@
 const gameBoard = (function () {
 
     let grid3 = [
-        [0,0,0],
-        [0,0,0],
-        [0,0,0]
+        ["","",""],
+        ["","",""],
+        ["","",""]
     ];
 
     let gameBoardObject = {grid: grid3};
@@ -16,7 +16,7 @@ const gameBoard = (function () {
     }
 
     const resetBoard = () => {
-        grid3.forEach(row => row.fill(0));
+        grid3.forEach(row => row.fill(""));
 
     };
 
@@ -87,7 +87,7 @@ const logicModule = (function () {
         let positionY = valuePlay[1]
         positionX = parseInt(positionX)
         positionY = parseInt(positionY)
-        if (gameBoardObject.grid[positionX][positionY] === 0 ){
+        if (gameBoardObject.grid[positionX][positionY] === "" ){
             return {positionX, positionY};
         }
         else {
@@ -100,7 +100,7 @@ const logicModule = (function () {
     const isTie = () => {
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
-                if (gameBoardObject.grid[i][j] === 0) {
+                if (gameBoardObject.grid[i][j] === "") {
                     return false;
                 }
             }
@@ -112,7 +112,7 @@ const logicModule = (function () {
         // Rows
         
         for (let i = 0; i < 3; i++) {
-            if (gameBoardObject.grid[i][0] !== 0 &&
+            if (gameBoardObject.grid[i][0] !== "" &&
                 gameBoardObject.grid[i][0] === gameBoardObject.grid[i][1] &&
                 gameBoardObject.grid[i][1] === gameBoardObject.grid[i][2]) {
                 return endTurnResult.win;
@@ -122,7 +122,7 @@ const logicModule = (function () {
     
         // Columns
         for (let j = 0; j < 3; j++) {
-            if (gameBoardObject.grid[0][j] !== 0 &&
+            if (gameBoardObject.grid[0][j] !== "" &&
                 gameBoardObject.grid[0][j] === gameBoardObject.grid[1][j] &&
                 gameBoardObject.grid[1][j] === gameBoardObject.grid[2][j]) {
                 return endTurnResult.win;
@@ -130,14 +130,14 @@ const logicModule = (function () {
         }
     
         // Diagonals
-        if (gameBoardObject.grid[0][0] !== 0 &&
+        if (gameBoardObject.grid[0][0] !== "" &&
             gameBoardObject.grid[0][0] === gameBoardObject.grid[1][1] &&
             gameBoardObject.grid[1][1] === gameBoardObject.grid[2][2]) {
             return endTurnResult.win;
                 
         }
     
-        if (gameBoardObject.grid[0][2] !== 0 &&
+        if (gameBoardObject.grid[0][2] !== "" &&
             gameBoardObject.grid[0][2] === gameBoardObject.grid[1][1] &&
             gameBoardObject.grid[1][1] === gameBoardObject.grid[2][0]) {
             return endTurnResult.win;
@@ -172,17 +172,10 @@ const logicModule = (function () {
     }
 
     const restart = () => {
-        let userChoice = prompt("Do you want to play another game ?")
-        if ( userChoice === "yes"){
             gameBoard.resetBoard()
             renderModule.displayMove()
             console.log("Game reseted. ")
             userLogic.switchPlayer()
-
-        }
-        else {
-            console.log("Okay, no more games. :'(")
-        }
     }
 
     return {
@@ -270,6 +263,7 @@ const generateGrid = () => {
         for (let j = 0; j < 3; j++){
                 const newBtn = document.createElement("button");
                 newBtn.classList.add("cell");
+                newBtn.classList.add("fadein")
                 newBtn.dataset.rows = i;
                 newBtn.dataset.columns = j;
                 newBtn.textContent = gameBoardObject[i][j];
@@ -334,6 +328,13 @@ const displayMenuName = () => {
     nameBtnRight.textContent= "OK !";
     nameBtnRight.setAttribute("id", "button-player-right");
     rightPartMain.appendChild(nameBtnRight);
+}
+
+const arePlayersReady = () => {
+    const pointsElements = document.querySelectorAll(".points")
+    if ( pointsElements.length >= 2){
+        generateGrid();
+    }
 }
 
 
@@ -423,12 +424,20 @@ const chronologicFunctionsBtn = (event) => {
 
     const displayPoints = () => {
         const leftPartMain = document.getElementById("left-part");
-        const rightPartMain = document.getElementById("right-part")
+        const rightPartMain = document.getElementById("right-part");
         if (eventBtn === "button-player-right"){
-            const spanPointsRight = document.createElement("span")
-            spanPointsRight.classList.add("points")
-            spanPointsRight.textContent = userBot.points
-            rightPartMain.appendChild(spanPointsRight)
+            const spanPointsRight = document.createElement("span");
+            spanPointsRight.classList.add("points");
+            spanPointsRight.textContent = userBot.points;
+            rightPartMain.classList.add("centered");
+            rightPartMain.appendChild(spanPointsRight);
+        }
+        if (eventBtn === "button-player-left"){
+            const spanPointsLeft = document.createElement("span");
+            spanPointsLeft.classList.add("points");
+            spanPointsLeft.textContent = user1.points;
+            leftPartMain.classList.add("centered")
+            leftPartMain.appendChild(spanPointsLeft)
         }
         
     
@@ -439,13 +448,13 @@ const chronologicFunctionsBtn = (event) => {
     endingEditingInput();
     removePlaceholderInput();
     displayUserName();
-    displayPoints();
     setTimeout(() => {
         deleteBtns(eventBtn);
-    }, 4100);
+        displayPoints();
+        arePlayersReady();
+    }, 4200);
 }
 
-generateGrid();
 displayMenuName();
 
 gamepart.addEventListener("click", retrieveClickPosition);
