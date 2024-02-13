@@ -325,8 +325,32 @@ function retrieveClickPosition(e) {
     const selectedCol = e.target.dataset.columns
     if (!selectedRow) return;
 
-    logicModule.play(selectedRow, selectedCol);
+    logicModule.play(selectedRow, selectedCol)
     displayMove();
+
+}
+
+const displayPlayers = () => {
+    const header = document.querySelector("header")
+
+    const playerNameZoneLeft = document.createElement("div")
+    playerNameZoneLeft.setAttribute("id", "player-left")
+    playerNameZoneLeft.textContent = user1.name
+    header.appendChild(playerNameZoneLeft)
+
+    const playerNameZoneRight = document.createElement("div")
+    playerNameZoneRight.setAttribute("id", "player-right")
+    playerNameZoneRight.textContent = userBot.name
+    header.appendChild(playerNameZoneRight)
+}
+
+const displayMenuName = () => {
+    const header = document.querySelector("header");
+
+    const playerInputLeft = document.createElement("input");
+    playerInputLeft.textContent = "Type Player 1 name."
+    playerInputLeft.classList.add("debug-font")
+    header.appendChild(playerInputLeft)
 
 }
 
@@ -337,6 +361,8 @@ generateGrid();
 return {
     generateGrid,
     displayMove,
+    displayPlayers,
+    displayMenuName,
 }
 
 })();

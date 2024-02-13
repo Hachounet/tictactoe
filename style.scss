@@ -4,6 +4,8 @@
     box-sizing: border-box;
 }
 
+$background-ui: rgba(110, 110, 110, 0.048);
+
 @font-face {
     font-family: "Debug";
     src: url(debugfreetrial-mvdyb-webfont.woff) format(woff);
@@ -115,20 +117,60 @@ header {
         grid-column: 2;
         background-image: linear-gradient(to right, #682aa1, #6a4ab7, #6d66ca, #7480db, #7f99e9, #88a4ea, #92afeb, #9eb9eb, #a4b9e0, #aab9d5, #afb8cb, #b4b8c0);
         
-        &:hover {
-            animation: blur 4s ease 0s infinite;
-        }
     }
+
+    input {
+        background-color: $background-ui;
+        background-image: linear-gradient(
+            45deg,
+            hsl(240deg 100% 20%) 0%,
+            hsl(322deg 100% 31%) 19%,
+            hsl(355deg 89% 58%) 27%,
+            hsl(39deg 100% 50%) 34%,
+            hsl(58deg 100% 47%) 41%,
+            hsl(69deg 86% 49%) 47%,
+            hsl(84deg 78% 53%) 53%,
+            hsl(106deg 72% 57%) 59%,
+            hsl(158deg 100% 43%) 66%,
+            hsl(185deg 100% 43%) 73%,
+            hsl(198deg 100% 50%) 81%,
+            hsl(206deg 100% 50%) 100%
+            );
+       
+    }
+
+    #player-left {
+        font-family: "Debug";
+        font-size: 1rem;
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: center;
+
+        
+    }
+
+    #player-right {
+        font-family: "Debug";
+        font-size: 3rem;
+        grid-column: 3;
+        grid-row: 1;
+        justify-self: center;
+    }
+
+   
 }
 
 main {
     grid-area: main;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     justify-content: center;
     align-items: center;
 
+
     #gamepart {
-        
+        grid-column: 2;
+        justify-self: center;
         display: grid;
         width: 25vw;
         height: 25vw;
@@ -136,7 +178,7 @@ main {
         grid-template-rows: 1fr 1fr 1fr;
 
         .cell {
-            background-color: rgba(110, 110, 110, 0.048);
+            background-color: $background-ui;
             border: 1px solid black;
             height: 100%;
             width: 100%;
@@ -182,6 +224,13 @@ main {
             
         }
         
+    }
+    
+
+    #player-left {
+        grid-column: 1;
+        grid-row: 1;
+        background-color: $background-ui;
     }
 
     
