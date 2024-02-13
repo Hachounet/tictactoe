@@ -347,6 +347,16 @@ const refreshPoints = () => {
     spanPointsRight.textContent = userBot.points;
 }
 
+const displayPlayerTurn = () => {
+    const getUserTurn = userLogic.getUserTurn();
+    if ( getUserTurn === user1 ){
+        // add class to underline text into input
+    }
+    else {
+        //add class to underline text into other input
+    }
+}
+
 
 
 const chronologicFunctionsBtn = (event) => {
@@ -440,6 +450,7 @@ const chronologicFunctionsBtn = (event) => {
             const spanPointsRight = document.createElement("span");
             spanPointsRight.setAttribute("id", "points-right")
             spanPointsRight.classList.add("points");
+            spanPointsRight.classList.add("fadein")
             spanPointsRight.textContent = userBot.points;
             rightPartMain.classList.add("centered");
             rightPartMain.appendChild(spanPointsRight);
@@ -448,6 +459,7 @@ const chronologicFunctionsBtn = (event) => {
             const spanPointsLeft = document.createElement("span");
             spanPointsLeft.setAttribute("id", "points-left")
             spanPointsLeft.classList.add("points");
+            spanPointsLeft.classList.add("fadein")
             spanPointsLeft.textContent = user1.points;
             leftPartMain.classList.add("centered")
             leftPartMain.appendChild(spanPointsLeft)

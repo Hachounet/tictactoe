@@ -120,6 +120,18 @@ header #player-input-right {
   justify-self: center;
 }
 
+.fadein {
+  animation: fadein 4s linear forwards;
+  opacity: 0;
+}
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 main {
   grid-area: main;
   display: grid;
@@ -135,18 +147,6 @@ main #gamepart {
   height: 25vw;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-}
-main #gamepart .fadein {
-  animation: fadein 4s linear forwards;
-  opacity: 0;
-}
-@keyframes fadein {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
 main #gamepart .cell {
   background-color: rgba(110, 110, 110, 0);
