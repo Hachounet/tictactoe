@@ -286,9 +286,11 @@ let initialization = userLogic.initUserTurn()
 const renderModule = (function () {
 
 const gameBoardObject = gameBoard.gameBoardObject.grid;
+const gamepart = document.getElementById("gamepart");
+
 
 const generateGrid = () => {
-    const gamepart = document.getElementById("gamepart");
+    
 
 
     for (let i = 0; i < 3; i++) {
@@ -348,21 +350,96 @@ const displayMenuName = () => {
     const header = document.querySelector("header");
 
     const playerInputLeft = document.createElement("input");
-    playerInputLeft.textContent = "Type Player 1 name."
+    playerInputLeft.setAttribute("placeholder", "Type Player1 name here.");
     playerInputLeft.classList.add("debug-font")
+    playerInputLeft.setAttribute("id", "player-input-left")
     header.appendChild(playerInputLeft)
 
+    const playerInputRight = document.createElement("input");
+    playerInputRight.setAttribute("placeholder", "Type Player 2 name here.");
+    playerInputRight.classList.add("debug-font");
+    playerInputRight.setAttribute("id", "player-input-right");
+    header.appendChild(playerInputRight)
+
+    const leftPartMain = document.getElementById("left-part");
+
+    const nameBtnLeft = document.createElement("button");
+    nameBtnLeft.textContent= "OK !"
+    nameBtnLeft.setAttribute("id", "button-player-left")
+    leftPartMain.appendChild(nameBtnLeft)
+
+    const rightPartMain = document.getElementById("right-part");
+
+    const nameBtnRight = document.createElement("button");
+    nameBtnRight.textContent= "OK !";
+    nameBtnRight.setAttribute("id", "button-player-right");
+    rightPartMain.appendChild(nameBtnRight);
 }
 
-gamepart.addEventListener("click", retrieveClickPosition);
+const retrieveNames = (event) => {
+    let eventBtn = event.target.id
+    if ( event.target.id === "button-player-left"){
+        const playerInputLeft = document.getElementById("player-input-left")
+        const playerNameLeft = playerInputLeft.value;
+
+        if (playerNameLeft) {
+            user1.name = playerNameLeft;
+            fadeBtns(eventBtn)
+            }
+        }
+    else if ( event.target.id === "button-player-right") {
+        const playerInputRight = document.getElementById("player-input-right")
+        const playerNameRight = playerInputRight.value;
+
+        if (playerNameRight) {
+            userBot.name = playerNameRight;
+            fadeBtns(eventBtn)
+        }
+        }
+    }
+
+const fadeBtns = (eventBtn) => {
+    if ( eventBtn === "button-player-right"){
+        const nameBtnRight = document.getElementById("button-player-right")
+        nameBtnRight.classList.add("fade-out")
+        setTimeout(deleteBtns(eventBtn), 4100)
+    }
+    else if ( eventBtn === "button-player-left") {
+        const nameBtnLeft = document.getElementById("button-player-left")
+        nameBtnLeft.classList.add("fade-out")
+        setTimeout(deleteBtns(eventBtn), 4100)
+    }
+}
+
+const deleteBtns = () => {
+    if ( eventBtn === "button-player-right"){
+        const nameBtnRight = document.getElementById("button-player-right")
+        const mainRightPart = document.getElementById("right-part")
+        mainRightPart.removeChild(nameBtnRight)
+    }
+    else if ( eventBtn === "button-player-left") {
+        const nameBtnLeft = document.getElementById("button-player-left")
+        const mainLeftPart = document.getElementById("left-part")
+        mainLeftPart.removeChild(nameBtnLeft);
+    }
+}
 
 generateGrid();
+displayMenuName();
+
+gamepart.addEventListener("click", retrieveClickPosition);
+const nameBtnLeft = document.getElementById("button-player-left");
+const nameBtnRight = document.getElementById("button-player-right");
+
+nameBtnLeft.addEventListener("click", retrieveNames)
+nameBtnRight.addEventListener("click", retrieveNames)
 
 return {
     generateGrid,
     displayMove,
     displayPlayers,
     displayMenuName,
+    fadeBtns,
 }
 
 })();

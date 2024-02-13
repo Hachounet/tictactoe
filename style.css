@@ -17,8 +17,9 @@ body {
   grid-template-areas: "header header" "main main" "footer footer";
   margin: auto;
   overflow: auto;
-  background: linear-gradient(32deg, rgb(178, 0, 255) 0%, rgb(37, 131, 207) 44%, rgb(3, 187, 26) 62%, rgb(235, 243, 33) 79%, rgb(207, 9, 9) 98%);
-  animation: gradient 15s ease infinite;
+  background-color: #D9AFD9;
+  background: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
+  animation: gradient 12s ease infinite;
   background-size: 400% 400%;
   background-attachment: fixed;
 }
@@ -92,22 +93,28 @@ header {
 header #title-site {
   font-size: 5rem;
   grid-column: 2;
-  background-image: linear-gradient(to right, #682aa1, #6a4ab7, #6d66ca, #7480db, #7f99e9, #88a4ea, #92afeb, #9eb9eb, #a4b9e0, #aab9d5, #afb8cb, #b4b8c0);
+  background-color: #00DBDE;
+  background-image: linear-gradient(64deg, #00DBDE 0%, #FC00FF 100%);
 }
 header input {
-  background-color: rgba(110, 110, 110, 0.048);
-  background-image: linear-gradient(45deg, hsl(240, 100%, 20%) 0%, hsl(322, 100%, 31%) 19%, hsl(355, 89%, 58%) 27%, hsl(39, 100%, 50%) 34%, hsl(58, 100%, 47%) 41%, hsl(69, 86%, 49%) 47%, hsl(84, 78%, 53%) 53%, hsl(106, 72%, 57%) 59%, hsl(158, 100%, 43%) 66%, hsl(185, 100%, 43%) 73%, hsl(198, 100%, 50%) 81%, hsl(206, 100%, 50%) 100%);
+  background-color: rgba(110, 110, 110, 0);
+  background-image: linear-gradient(64deg, #00DBDE 0%, #FC00FF 100%);
+  font-size: 2.5rem;
+  border: none;
+  text-align: center;
 }
-header #player-left {
-  font-family: "Debug";
-  font-size: 1rem;
+header input:hover {
+  cursor: pointer;
+}
+header input:focus {
+  outline: none;
+}
+header #player-input-left {
   grid-column: 1;
   grid-row: 1;
   justify-self: center;
 }
-header #player-right {
-  font-family: "Debug";
-  font-size: 3rem;
+header #player-input-right {
   grid-column: 3;
   grid-row: 1;
   justify-self: center;
@@ -130,7 +137,7 @@ main #gamepart {
   grid-template-rows: 1fr 1fr 1fr;
 }
 main #gamepart .cell {
-  background-color: rgba(110, 110, 110, 0.048);
+  background-color: rgba(110, 110, 110, 0);
   border: 1px solid black;
   height: 100%;
   width: 100%;
@@ -166,10 +173,74 @@ main #gamepart .cell:nth-child(9) {
   border-bottom: none;
   border-right: none;
 }
-main #player-left {
-  grid-column: 1;
-  grid-row: 1;
-  background-color: rgba(110, 110, 110, 0.048);
+main #left-part, main #right-part {
+  display: flex;
+  align-self: baseline;
+  justify-content: center;
+}
+main #left-part .fade-out, main #right-part .fade-out {
+  animation: fade-out 4s linear forwards;
+  opacity: 1;
+}
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+main #left-part button, main #right-part button {
+  text-decoration: none;
+  position: relative;
+  border: none;
+  font-size: 25px;
+  font-family: "Debug";
+  cursor: pointer;
+  color: #fff;
+  width: 9em;
+  height: 3em;
+  max-width: 150px;
+  max-height: 32px;
+  line-height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+  background-size: 300%;
+  border-radius: 30px;
+  z-index: 1;
+}
+main #left-part button:hover, main #right-part button:hover {
+  animation: ani 8s linear infinite;
+  border: none;
+}
+@keyframes ani {
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 400%;
+  }
+}
+main #left-part button:before, main #right-part button:before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  z-index: -1;
+  background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+  background-size: 400%;
+  border-radius: 35px;
+  transition: 1s;
+}
+main #left-part button:hover::before, main #right-part button:hover::before {
+  filter: blur(20px);
+}
+main #left-part button:active, main #right-part button:active {
+  background: linear-gradient(32deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
 }
 
 footer {
@@ -180,7 +251,7 @@ footer {
   font-size: 1.5vw;
 }
 footer #footer-text {
-  background-image: linear-gradient(to right, #682aa1, #6a4ab7, #6d66ca, #7480db, #7f99e9, #7e9be1, #7f9dd8, #829ecf, #748ab1, #667794, #596477, #4c525c);
+  background-image: linear-gradient(64deg, #00DBDE 0%, #FC00FF 100%);
   display: flex;
   justify-self: center;
 }/*# sourceMappingURL=style.css.map */
