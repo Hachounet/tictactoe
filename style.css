@@ -178,6 +178,12 @@ main #left-part, main #right-part {
   align-self: baseline;
   justify-content: center;
 }
+main #left-part .points, main #right-part .points {
+  align-self: center;
+  justify-self: center;
+  font-family: "Debug";
+  font-size: 100px;
+}
 main #left-part .fade-out, main #right-part .fade-out {
   animation: fade-out 4s linear forwards;
   opacity: 1;

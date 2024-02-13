@@ -57,7 +57,6 @@ const logicModule = (function () {
     function play(selectedRow, selectedCol) {
         let isValidReturn = false;
         
-        // Input needs to be in xx format like 11 / 01 / 22 etc.
         let valuePlay = [selectedRow, selectedCol];
         isValidReturn = isValid(valuePlay);
              
@@ -79,31 +78,6 @@ const logicModule = (function () {
         printNewRound();
         }
     } 
-
-/* Cancelled. Will be reworked with minmax algo later.
-
-    function aiPlay() {
-        // Can it win ? 
-        console.log("It's AI turn.")
-        const userMarqueur = userLogic.getUserTurn()
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                if (gameBoardObject.grid[i][j] === 0) {
-                    if (isWin()) {
-                        gameBoard.updateCell(i, j, userMarqueur.marqueur);
-                        const annWinner = logicModule.annWinner()
-                        return;
-                    } else {
-                        // Undo the move if it doesn't lead to a win
-                        playRandomMove()
-                        gameBoard.updateCell(i, j, 0);
-                    }
-                }
-            }
-        }
-    }
-    */
-
 
 
     function isValid(valuePlay){
@@ -215,7 +189,6 @@ const logicModule = (function () {
         printNewRound,
         isValid,
         play,
-        // aiPlay,
         isWin,
         isTie,
         restart,
@@ -250,11 +223,11 @@ function userFactory(name, typeOf, marqueur){
 }
 
 function playerFactory(name) {
-    return userFactory(name, "Player", "1")
+    return userFactory(name, "Player", "X")
 }
 
 function aiFactory(name){
-    return userFactory(name, "AI", "2")
+    return userFactory(name, "AI", "O")
 }
 
 const switchPlayer = () => {
@@ -277,8 +250,8 @@ return {
 })();
 
 
-const user1 = userLogic.playerFactory("val")
-const userBot = userLogic.aiFactory("Bot")
+const user1 = userLogic.playerFactory("User1")
+const userBot = userLogic.aiFactory("User2")
 let initialization = userLogic.initUserTurn()
 
 // Rendering module
@@ -332,19 +305,6 @@ function retrieveClickPosition(e) {
 
 }
 
-const displayPlayers = () => {
-    const header = document.querySelector("header")
-
-    const playerNameZoneLeft = document.createElement("div")
-    playerNameZoneLeft.setAttribute("id", "player-left")
-    playerNameZoneLeft.textContent = user1.name
-    header.appendChild(playerNameZoneLeft)
-
-    const playerNameZoneRight = document.createElement("div")
-    playerNameZoneRight.setAttribute("id", "player-right")
-    playerNameZoneRight.textContent = userBot.name
-    header.appendChild(playerNameZoneRight)
-}
 
 const displayMenuName = () => {
     const header = document.querySelector("header");
@@ -376,52 +336,113 @@ const displayMenuName = () => {
     rightPartMain.appendChild(nameBtnRight);
 }
 
-const retrieveNames = (event) => {
-    let eventBtn = event.target.id
-    if ( event.target.id === "button-player-left"){
-        const playerInputLeft = document.getElementById("player-input-left")
-        const playerNameLeft = playerInputLeft.value;
 
-        if (playerNameLeft) {
-            user1.name = playerNameLeft;
-            fadeBtns(eventBtn)
+const chronologicFunctionsBtn = (event) => {
+    // Only put here functions who need event and the eventBtn var.
+    let eventBtn = event.target.id
+
+    const retrieveNames = () => {
+
+        if ( eventBtn === "button-player-left"){
+            const playerInputLeft = document.getElementById("player-input-left")
+            const playerNameLeft = playerInputLeft.value;
+
+            if (playerNameLeft) {
+                user1.name = playerNameLeft;
+                }
+            }
+
+        else if ( eventBtn === "button-player-right") {
+            const playerInputRight = document.getElementById("player-input-right")
+            const playerNameRight = playerInputRight.value;
+    
+            if (playerNameRight) {
+                userBot.name = playerNameRight;
+            }
             }
         }
-    else if ( event.target.id === "button-player-right") {
+    
+    const fadeBtns = () => {
+        if ( eventBtn === "button-player-right"){
+            const nameBtnRight = document.getElementById("button-player-right")
+            nameBtnRight.classList.add("fade-out")
+            
+        }
+        else if ( eventBtn === "button-player-left") {
+            const nameBtnLeft = document.getElementById("button-player-left")
+            nameBtnLeft.classList.add("fade-out")
+        }
+    }
+    
+    const deleteBtns = () => {
+        if ( eventBtn === "button-player-right"){
+            const nameBtnRight = document.getElementById("button-player-right")
+            const mainRightPart = document.getElementById("right-part")
+            mainRightPart.removeChild(nameBtnRight)
+        }
+        else if ( eventBtn === "button-player-left") {
+            const nameBtnLeft = document.getElementById("button-player-left")
+            const mainLeftPart = document.getElementById("left-part")
+            mainLeftPart.removeChild(nameBtnLeft);
+        }
+    }
+
+    const endingEditingInput = () => {
+        const playerInputLeft = document.getElementById("player-input-left")
         const playerInputRight = document.getElementById("player-input-right")
-        const playerNameRight = playerInputRight.value;
-
-        if (playerNameRight) {
-            userBot.name = playerNameRight;
-            fadeBtns(eventBtn)
+        if (eventBtn === "button-player-right"){
+            playerInputRight.setAttribute("disabled", "disabled")
         }
+        else {
+            playerInputLeft.setAttribute("disabled", "disabled")
+        }
+
+    }
+
+    const removePlaceholderInput = () => {
+        const playerInputLeft = document.getElementById("player-input-left")
+        const playerInputRight = document.getElementById("player-input-right")
+        if (eventBtn === "button-player-right"){
+            playerInputRight.removeAttribute("placeholder")
+        }
+        else {
+            playerInputLeft.removeAttribute("placeholder")
         }
     }
 
-const fadeBtns = (eventBtn) => {
-    if ( eventBtn === "button-player-right"){
-        const nameBtnRight = document.getElementById("button-player-right")
-        nameBtnRight.classList.add("fade-out")
-        setTimeout(deleteBtns(eventBtn), 4100)
+    const displayUserName = () => {
+        const playerInputLeft = document.getElementById("player-input-left")
+        const playerInputRight = document.getElementById("player-input-right")
+        if (eventBtn === "button-player-right"){
+            playerInputRight.setAttribute("placeholder", userBot.name)
+        }
+        else {
+            playerInputLeft.setAttribute("placeholder", user1.name)
+        }
     }
-    else if ( eventBtn === "button-player-left") {
-        const nameBtnLeft = document.getElementById("button-player-left")
-        nameBtnLeft.classList.add("fade-out")
-        setTimeout(deleteBtns(eventBtn), 4100)
-    }
-}
 
-const deleteBtns = () => {
-    if ( eventBtn === "button-player-right"){
-        const nameBtnRight = document.getElementById("button-player-right")
-        const mainRightPart = document.getElementById("right-part")
-        mainRightPart.removeChild(nameBtnRight)
+    const displayPoints = () => {
+        const leftPartMain = document.getElementById("left-part");
+        const rightPartMain = document.getElementById("right-part")
+        if (eventBtn === "button-player-right"){
+            const spanPointsRight = document.createElement("span")
+            spanPointsRight.classList.add("points")
+            spanPointsRight.textContent = userBot.points
+            rightPartMain.appendChild(spanPointsRight)
+        }
+        
+    
     }
-    else if ( eventBtn === "button-player-left") {
-        const nameBtnLeft = document.getElementById("button-player-left")
-        const mainLeftPart = document.getElementById("left-part")
-        mainLeftPart.removeChild(nameBtnLeft);
-    }
+
+    retrieveNames(eventBtn);
+    fadeBtns(eventBtn);
+    endingEditingInput();
+    removePlaceholderInput();
+    displayUserName();
+    displayPoints();
+    setTimeout(() => {
+        deleteBtns(eventBtn);
+    }, 4100);
 }
 
 generateGrid();
@@ -431,15 +452,14 @@ gamepart.addEventListener("click", retrieveClickPosition);
 const nameBtnLeft = document.getElementById("button-player-left");
 const nameBtnRight = document.getElementById("button-player-right");
 
-nameBtnLeft.addEventListener("click", retrieveNames)
-nameBtnRight.addEventListener("click", retrieveNames)
+nameBtnLeft.addEventListener("click", chronologicFunctionsBtn)
+nameBtnRight.addEventListener("click", chronologicFunctionsBtn)
 
 return {
     generateGrid,
     displayMove,
-    displayPlayers,
     displayMenuName,
-    fadeBtns,
+    chronologicFunctionsBtn,
 }
 
 })();
