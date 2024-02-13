@@ -174,6 +174,7 @@ const logicModule = (function () {
     const restart = () => {
             gameBoard.resetBoard()
             renderModule.displayMove()
+            renderModule.refreshPoints()
             console.log("Game reseted. ")
             userLogic.switchPlayer()
     }
@@ -337,6 +338,16 @@ const arePlayersReady = () => {
     }
 }
 
+const refreshPoints = () => {
+    const spanPointsLeft = document.getElementById("points-left");
+    const spanPointsRight = document.getElementById("points-right");
+    
+    // Mettre à jour le nombre de points des joueurs dans les éléments span correspondants
+    spanPointsLeft.textContent = user1.points;
+    spanPointsRight.textContent = userBot.points;
+}
+
+
 
 const chronologicFunctionsBtn = (event) => {
     // Only put here functions who need event and the eventBtn var.
@@ -427,6 +438,7 @@ const chronologicFunctionsBtn = (event) => {
         const rightPartMain = document.getElementById("right-part");
         if (eventBtn === "button-player-right"){
             const spanPointsRight = document.createElement("span");
+            spanPointsRight.setAttribute("id", "points-right")
             spanPointsRight.classList.add("points");
             spanPointsRight.textContent = userBot.points;
             rightPartMain.classList.add("centered");
@@ -434,6 +446,7 @@ const chronologicFunctionsBtn = (event) => {
         }
         if (eventBtn === "button-player-left"){
             const spanPointsLeft = document.createElement("span");
+            spanPointsLeft.setAttribute("id", "points-left")
             spanPointsLeft.classList.add("points");
             spanPointsLeft.textContent = user1.points;
             leftPartMain.classList.add("centered")
@@ -469,6 +482,7 @@ return {
     displayMove,
     displayMenuName,
     chronologicFunctionsBtn,
+    refreshPoints,
 }
 
 })();
