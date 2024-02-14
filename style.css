@@ -96,6 +96,11 @@ header #title-site {
   background-color: #00DBDE;
   background-image: linear-gradient(64deg, #00DBDE 0%, #FC00FF 100%);
 }
+header .underlined {
+  -webkit-text-decoration: underline solid 25%;
+          text-decoration: underline solid 25%;
+  text-decoration-color: rgba(0, 255, 136, 0.61);
+}
 header input {
   background-color: rgba(110, 110, 110, 0);
   background-image: linear-gradient(64deg, #00DBDE 0%, #FC00FF 100%);
@@ -118,9 +123,6 @@ header #player-input-right {
   grid-column: 3;
   grid-row: 1;
   justify-self: center;
-}
-header .underlined {
-  text-decoration: underline;
 }
 
 .fadein {

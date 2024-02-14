@@ -124,6 +124,13 @@ header {
         background-image: $background-image-for-text;
     }
 
+    .underlined {
+
+        text-decoration: underline solid 25%;
+        text-decoration-color: rgba(0, 255, 136, 0.61);
+        
+    }
+
     input {
         
         background-color: $background-ui;
@@ -132,6 +139,7 @@ header {
         font-size: 2.5rem;
         border: none;
         text-align: center;
+        
 
         &:hover {
             cursor: pointer;
@@ -140,6 +148,7 @@ header {
         &:focus {
             outline: none;
         }
+       
     }
 
     #player-input-left {
@@ -156,9 +165,6 @@ header {
         justify-self: center;
     }
 
-    .underlined {
-        text-decoration: underline;
-    }
 
    
 }
