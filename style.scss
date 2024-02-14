@@ -156,6 +156,10 @@ header {
         justify-self: center;
     }
 
+    .underlined {
+        text-decoration: underline;
+    }
+
    
 }
 
@@ -179,6 +183,28 @@ header {
     }
   }
 
+ //Fadeout used by JS when name have been validated
+
+ .fade-out {
+    -webkit-animation: fadeout 4s linear forwards;
+    animation: fade-out 4s linear forwards;
+    opacity: 1;
+}
+
+@-webkit-keyframes fade-out {
+    0%,100% {opacity: 0;}
+    50% {opacity: 1;}
+}
+
+@keyframes fade-out {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
 main {
     grid-area: main;
     display: grid;
@@ -195,6 +221,24 @@ main {
         height: 25vw;
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
+
+        #winner-div {
+            grid-column: 1/4;
+            grid-row: 2;
+            align-self: center;
+            justify-self: center;
+
+            p {
+                font-family: "Debug";
+                font-size: xx-large;
+                background-color: $background-ui;
+                background-image: $background-image-for-text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+
+            }
+          
+        }
 
         
 
@@ -253,6 +297,7 @@ main {
         
     }
 
+    // Used to display points centered
     .centered {
         align-self: center !important;
         justify-content: center;
@@ -274,27 +319,6 @@ main {
             -webkit-text-fill-color: transparent;
         }
 
-        //Fadeout used by JS when name have been validated
-
-        .fade-out {
-            -webkit-animation: fadeout 4s linear forwards;
-            animation: fade-out 4s linear forwards;
-            opacity: 1;
-        }
-
-        @-webkit-keyframes fade-out {
-            0%,100% {opacity: 0;}
-            50% {opacity: 1;}
-        }
-
-        @keyframes fade-out {
-            0% {
-              opacity: 1;
-            }
-            100% {
-              opacity: 0;
-            }
-          }
 
         // Thanks to Kirzin for his work, find on uiverse.io
         button {

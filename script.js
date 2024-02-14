@@ -172,9 +172,13 @@ const logicModule = (function () {
     }
 
     const restart = () => {
+        setTimeout(() => {
             gameBoard.resetBoard()
+        }, 1000);
+            
             renderModule.displayMove()
             renderModule.refreshPoints()
+            renderModule.restartDisplay()
             console.log("Game reseted. ")
             userLogic.switchPlayer()
     }
@@ -275,9 +279,59 @@ const generateGrid = () => {
     }
 }
 
+const ungenerateGrid = () => {
+    const cells = document.querySelectorAll(".cell")
+    const gamepart = document.getElementById("gamepart")
+    cells.forEach(cell => {
+        cell.classList.remove("fadein")
+        cell.classList.add("fade-out")
+    })
+    setTimeout(() => {
+        cells.forEach(cell => {
+            gamepart.removeChild(cell);
+        });
+    }, 4100);
+}
+
+const displayLastWinner = () => {
+    const gamepart = document.getElementById("gamepart")
+    const winnerDiv = document.createElement("div")
+    const pWinnerDiv = document.createElement("p")
+    const userTurn = userLogic.getUserTurn()
+    winnerDiv.setAttribute("id", "winner-div")
+    winnerDiv.setAttribute("class", "debug-font")
+    winnerDiv.setAttribute("class", "fadein")
+    pWinnerDiv.textContent = `The winner is ${userTurn.name} and have now ${userTurn.points}.`
+    winnerDiv.appendChild(pWinnerDiv)
+    gamepart.appendChild(winnerDiv);
+}
+
+const undisplayLastWinner = () => {
+    const gamepart = document.getElementById("gamepart")
+    const winnerDiv = document.getElementById("winner-div")
+    winnerDiv.setAttribute("class", "fade-out")
+    setTimeout(() => {
+        gamepart.removeChild(winnerDiv)
+    }, 4100);
+}
+
+const restartDisplay = () => {
+    ungenerateGrid();
+    setTimeout(() => {
+        displayLastWinner();
+    }, 4100);
+    setTimeout(() => {
+        undisplayLastWinner();
+    }, 4200);
+    setTimeout(() => {
+        generateGrid();
+    }, 8200);
+    
+    
+}
+
 const displayMove = () => {
     let cells = document.getElementsByClassName("cell");
-   
     let index = 0;
     cells = Array.from(cells)
     for ( let i = 0; i < 3; i++){
@@ -356,6 +410,7 @@ const displayPlayerTurn = () => {
         //add class to underline text into other input
     }
 }
+
 
 
 
@@ -491,6 +546,10 @@ nameBtnRight.addEventListener("click", chronologicFunctionsBtn)
 
 return {
     generateGrid,
+    ungenerateGrid,
+    displayLastWinner,
+    undisplayLastWinner,
+    restartDisplay,
     displayMove,
     displayMenuName,
     chronologicFunctionsBtn,
