@@ -47,12 +47,14 @@ const logicModule = (function () {
     
     const gameBoardObject = gameBoard.gameBoardObject
 
+    /* Was used for console game
     const printNewRound = () => {
         const getBoard = gameBoard.getBoard()
         const userTurn = userLogic.getUserTurn();
         console.log(`It's ${userTurn.name} turn.`)
         console.log(`Current board :`, getBoard)
     }
+    */
 
     function play(selectedRow, selectedCol) {
         let isValidReturn = false;
@@ -75,7 +77,9 @@ const logicModule = (function () {
         }
         else {
         userLogic.switchPlayer();
+        /* Was used for console game
         printNewRound();
+        */
         }
     } 
 
@@ -91,7 +95,9 @@ const logicModule = (function () {
             return {positionX, positionY};
         }
         else {
+            /* Used for console game
             console.log("You can't play here.")
+            */
             return false;
             
         }
@@ -148,7 +154,9 @@ const logicModule = (function () {
         else {
             const tieResult = isTie()
             if ( tieResult === false){
+                /* Used for console game
                 console.log("No win yet.");
+                */
                 return endTurnResult.nowinnotie;
             } 
             else {
@@ -161,30 +169,36 @@ const logicModule = (function () {
     const annWinner = () => {
         const userTurn = userLogic.getUserTurn()
         userTurn.points++
+        /* Used for console game
         console.log(`The winner is ${userTurn.name} and have now ${userTurn.points}`);
+        */
         restart()
 
     }
 
     const annTie = () => {
+        /* Used for console game
         console.log("This is a tie ! Equality !")
+        */
         restart()
     }
 
     const restart = () => {
         setTimeout(() => {
             gameBoard.resetBoard()
-        }, 1000);
+            userLogic.switchPlayer()
+        }, 4200);
             
             renderModule.displayMove()
             renderModule.refreshPoints()
             renderModule.restartDisplay()
+            /* Used for console game
             console.log("Game reseted. ")
-            userLogic.switchPlayer()
+            */
+            
     }
 
     return {
-        printNewRound,
         isValid,
         play,
         isWin,
@@ -215,8 +229,6 @@ function userFactory(name, typeOf, marqueur){
         typeOf: typeOf,
         marqueur: marqueur,
         points : 0,
-        talk() {
-            return console.log(`Hello i'm ${name}`) }
     }
 }
 
@@ -281,7 +293,6 @@ const generateGrid = () => {
 
 const ungenerateGrid = () => {
     const cells = document.querySelectorAll(".cell")
-    const gamepart = document.getElementById("gamepart")
     cells.forEach(cell => {
         cell.classList.remove("fadein")
         cell.classList.add("fade-out")
@@ -294,7 +305,6 @@ const ungenerateGrid = () => {
 }
 
 const displayLastWinner = () => {
-    const gamepart = document.getElementById("gamepart")
     const winnerDiv = document.createElement("div")
     const pWinnerDiv = document.createElement("p")
     const userTurn = userLogic.getUserTurn()
@@ -307,7 +317,6 @@ const displayLastWinner = () => {
 }
 
 const undisplayLastWinner = () => {
-    const gamepart = document.getElementById("gamepart")
     const winnerDiv = document.getElementById("winner-div")
     winnerDiv.setAttribute("class", "fade-out")
     setTimeout(() => {
